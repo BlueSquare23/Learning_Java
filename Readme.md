@@ -10,10 +10,10 @@ tutorial below.
 [Java Programming for Beginners](https://youtu.be/A74TOX803D0)
 
 They're using some silly web-IDE to write code in the tutorial. I am not about
-that live. My tools are vim, terminal, jdk-17, java, javac.
+that life. My tools are vim, terminal, jdk-17, java, javac, and jshell.
 
 
-## Hello World
+## Hello World!
 
 Below is the code for the hello world program in java.
 
@@ -25,7 +25,9 @@ class HelloWorld {
 }
 ```
 
-Java has a more "boiler-plate" code as compared to other programming languages.
+A classic criticism is that java has more "boiler-plate" code as compared to
+other programming languages meaning it takes alot more code to do something
+simple like print a string to the console.
 
 
 ### Classes, Objects, & Methods
@@ -265,7 +267,7 @@ There are two types of type conversion, implicit and explicit. An implicit type
 conversion is when the compiler can translate from one type to another without
 needing to be told what to do.
 
-For example, with the code below the conversion from an into a double is
+For example, with the code below the conversion from an `int` to a `double` is
 implicit because the compiler can add that information without needing to be
 told how to from us.
 
@@ -290,8 +292,8 @@ class TypeConversion {
 5.0
 ```
 
-However, if we were to try that conversion the other way, from double to int,
-we would get an error like the following at compile time.
+However, if we were to try that conversion the other way, from `double` to
+`int`, we would get an error like the following at compile time.
 
 ```
 > javac TypeConversion.java
@@ -299,10 +301,10 @@ error: incompatible types: possible lossy conversion from double to int
 ```
 
 That's because the Java compiler would have to snip off the info after the
-decimals place in order to cram it into an int.
+decimal place in order to cram it into an int.
 
 Now java can do this conversion, however it has to be told to it explicitly. We
-can do so in java using a cast operator like so
+can do so in java using a type-cast operator like so
 
 * `TypeConversion.java`
 
@@ -310,10 +312,10 @@ can do so in java using a cast operator like so
 class TypeConversion {
     public static void main(String[] args){
         int num1 = 5;
-        double num2 = num1;
+        double num2 = num1;  // Implicit
 
         double num3 = 1.234;
-        int num4 = (int)num3;
+        int num4 = (int)num3;  // Explicit 
 
         System.out.println(num2);
         System.out.println(num4);
@@ -330,25 +332,336 @@ class TypeConversion {
 1
 ```
 
+## Jshell
+
+To demonstrate simple things in java I'm not going to write a whole program and
+compile it every time. Instead, I'm just going to use the java repl known as
+[`jshell`](https://docs.oracle.com/javase/10/jshell/introduction-jshell.htm#JSHEL-GUID-465BA4F5-E77D-456F-BCB7-D826AC1E18AE).
+
+If you have the [JDK](https://www.oracle.com/java/technologies/downloads/)
+installed you can run jshell from a command line by just typing `jshell`.
+
+```
+> jshell
+|  Welcome to JShell -- Version 17.0.1
+|  For an introduction type: /help intro
+
+jshell> 
+```
+
+Then you can run java interactively on from the CLI without having to save and
+compiler and write so much boiler plate ect..
+
+```
+jshell> int num = 1;
+num ==> 1
+
+jshell> System.out.println(num);
+1
+```
+
+Exit with /exit.
+
+## Operators
+
+There are several kinds of operations in java. Roughly speaking an operator is
+a mathematical or logical symbol which can be used to manipulate the values
+passed to it as operands.
+
+### Arithmetic Operators
+
+This course will cover the 5 arithmetic operators in java. There are other
+bitwise operators that java also has but they're beyond the scope of this intro
+course.
+
+```
+class Operators {
+    public static void main(String[] args) {
+        int num1 = 12;
+        int num2 = 6;
+
+        System.out.println("First Number: " + num1);
+        System.out.println("Second Number: " + num2);
+        System.out.println("---------------");
+
+        // Addition
+        System.out.print("Addition: ");
+        System.out.println(num1 + num2);
+
+        // Subtraction
+        System.out.print("Subtraction: ");
+        System.out.println(num1 - num2);
+
+        // Multiplication
+        System.out.print("Multiplication: ");
+        System.out.println(num1 * num2);
+
+        // Division
+        System.out.print("Division: ");
+        System.out.println(num1 / num2);
+
+        // Modulus (Remainder)
+        System.out.print("Modulus: ");
+        System.out.println(num1 % num2);
+
+    }
+}
+```
+
+These operators exist in most modern languages.
+
+Modulus is the only that might be confusing to newer programmers. Its just the
+value that's left after doing a division. So 3 goes into 2 once with 1 left
+over so that means 3 % 2 -> 1.
 
 
+There are some other things worth noting due to java's typing.
 
+### Integer Division
 
+For integer division (division of an integer by another integer) the result
+will always be an integer. For example,
 
+```
+jshell>  System.out.println(12 / 5);
+2
+```
 
+Of course we know the real answer is 2.4 but since both vars are ints the
+result is also of type int.
 
+If we make any of the values in a division a double the result will be a
+double. For example,
 
+```
+jshell> System.out.println(12.0 / 5);
+2.4
 
+jshell> System.out.println(12 / 5.0);
+2.4
 
+jshell> System.out.println(12.0 / 5.0);
+2.4
+```
 
+However, if both are of type int, the result will be type int.
 
+### Arithmetic Assignment Operators
 
+It is possible to do both assignment and arithmetic at the same time in java
+using the arithmetic assignment operators. For example,
 
+```
+jshell> int number = 5;
+number ==> 5
 
+jshell> number += 5;
+$6 ==> 10
 
+jshell> System.out.println(number);
+10
+```
 
+* All Arithmetic Assignment Operators
 
+```
+    +=  Plus Equals
+    -=  Minus Equals
+    *=  Multiply Equals
+    /=  Divide Equals
+    %=  Mod Equals
+```
 
+Here's another example with divide equals.
+
+```
+jshell> double number = 12.0;
+number ==> 12.0
+
+jshell> number /= 5;
+$9 ==> 2.4
+
+jshell> System.out.println(number);
+2.4
+```
+
+And another one with mod equals.
+
+```
+jshell> int number = 3;
+number ==> 3
+
+jshell> number %= 2;
+$17 ==> 1
+
+jshell> System.out.println(number);
+1
+```
+
+### Relational Operators
+
+In java there are six types of relational operators.
+
+```
+    ==  Equality Operator
+    !=  Inequality Operator
+    >   Greater Than Operator
+    <   Less Than Operator
+    >=  Greater Than or Equal To Operator
+    <=  Less Than or Equal To Operator
+```
+
+These operators return type Boolean (aka true or false).
+
+Below are some examples of the operators in action using jshell.
+
+```
+jshell> System.out.println(10 == 5);
+false
+
+jshell> System.out.println(10 != 5);
+true
+
+jshell> System.out.println(10 > 5);
+true
+
+jshell> System.out.println(10 < 5);
+false
+
+jshell> System.out.println(10 >= 5);
+true
+
+jshell> System.out.println(10 <= 5);
+false
+```
+
+### Increment / Decrement Operators
+
+The increment / decrement operators are used to increase the values of or
+decrease the value of a variable by 1. For example,
+
+```
+jshell> int num = 5;
+num ==> 5
+
+jshell> num--;
+$60 ==> 5
+
+jshell> System.out.println(num);
+4
+```
+
+That's all well and good. However, note java is weird. If we try to increment
+and print at the same time the print operation will happen before the increment
+operation. The value is still incremented in memory. But its printed first.
+
+The simple explanation of this is that that compiler reads from left to right.
+So it reads `println(value` before reading the `++` part.
+
+```
+jshell> int num = 5;
+num ==> 5
+
+jshell> System.out.println(num++);
+5
+
+jshell> System.out.println(num++);
+6
+
+jshell> System.out.println(num++);
+7
+
+jshell> System.out.println(num++);
+8
+```
+
+However, if we reverse where the increment or decrement operators goes so that
+its before the value then print will handle things as we're expecting.
+
+```
+jshell> int num = 5;
+num ==> 5
+
+jshell> System.out.println(++num);
+6
+
+jshell> System.out.println(++num);
+7
+
+jshell> System.out.println(++num);
+8
+```
+
+### Logical And & Logical Or Operators
+
+Lastly, java provides three basic logical operators.
+
+#### Logical And - &&
+
+The `&&` logical and operator returns true if both sides of the expression are
+true. For example,
+
+```
+jshell> System.out.println(true && true);
+true
+
+jshell> System.out.println(true && false);
+false
+
+jshell> System.out.println(false && true);
+false
+
+jshell> System.out.println(false && false);
+false
+```
+
+We can change the `true` and `false` keywords out for other arithmetic
+expressions as well. For example,
+
+```
+jshell> System.out.println(5 > 3 && 10 < 100);
+true
+
+jshell> System.out.println(5 > 3 && 100 < 1);
+false
+
+jshell> System.out.println(3 > 5 && 10 < 100);
+false
+```
+
+#### Logical Or - ||
+
+The logical Or operator is represented by the double pipe `||` symbols.
+
+Logical Or returns true if either side of the expression are true and only
+returns false if both sides are false.
+
+```
+jshell> System.out.println(true || true);
+true
+
+jshell> System.out.println(true || false);
+true
+
+jshell> System.out.println(false || true);
+true
+
+jshell> System.out.println(false || false);
+false
+```
+
+#### Logic Not - !
+
+Logical not is represented by the bang (exclamation mark) `!` and inverts the
+value of a boolean. For example,
+
+```
+jshell> System.out.println(!false);
+true
+
+jshell> System.out.println(! (1 < 100));
+false
+```
 
 
 
