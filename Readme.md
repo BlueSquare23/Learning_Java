@@ -115,7 +115,12 @@ them via the .gitignore.
 The JVM will look for the main method to start executing the program within the
 Class that matches the name of the source file.
 
-So for example 
+So for example with our `HelloWorld.java` program, the JVM will look for the
+main method within the class called `HelloWorld`.
+
+We're explicitly compiling then envoking the class we want to run here, so the
+above doesn't exaclty make sense in our context. However, java can be started
+and run in a number of different more automated environments.
 
 #### More about "main" Method
 
@@ -123,11 +128,11 @@ The JVM looks for a main method that meets the following criteria.
 
 `public static void main(String[] args)`
 
-* Static Method (static)
-* Named main
-* Has public access (public)
-* Takes a string array arg (String[])
-* And doesn't return any value (void)
+* Static Method `static`
+* Named `main`
+* Has public access `public`
+* Takes a string array arg `String[]`
+* And doesn't return any value `void`
 
 Don't worry too much about what that all means right now. The course will
 elaborate on each as it goes on.
@@ -170,7 +175,7 @@ variable is valid. For example, in the above code the variable `age` is defined
 within the main method and so it is considered locally scoped (relative to the
 print line statement).
 
-However, the variable weight is considered globally scoped, meaning any other
+However, the variable `weight` is considered globally scoped, meaning any other
 method within the Main class could make use of that value.
 
 Lastly, the local scope of a variable supersedes a higher level scope. So for
@@ -209,7 +214,7 @@ methods, ect..
 
 [Java Reserved Keywords](https://www.w3schools.com/java/java_ref_keywords.asp)
 
-Technically you can start a variable name with a $ or a _. However, that is
+Technically you can start a variable name with a $ or a \_. However, that is
 frowned upon because it can hurt code readability.
 
 As convention, camelCase is used when naming variables in java.
@@ -414,10 +419,10 @@ Modulus is the only that might be confusing to newer programmers. Its just the
 value that's left after doing a division. So 3 goes into 2 once with 1 left
 over so that means 3 % 2 -> 1.
 
+There are some other things worth noting due to java's typing that we'll
+discuss in the next section.
 
-There are some other things worth noting due to java's typing.
-
-### Integer Division
+#### Integer Division
 
 For integer division (division of an integer by another integer) the result
 will always be an integer. For example,
@@ -465,11 +470,11 @@ jshell> System.out.println(number);
 * All Arithmetic Assignment Operators
 
 ```
-    +=  Plus Equals
-    -=  Minus Equals
-    *=  Multiply Equals
-    /=  Divide Equals
-    %=  Mod Equals
+    +=    Plus Equals
+    -=    Minus Equals
+    *=    Multiply Equals
+    /=    Divide Equals
+    %=    Mod Equals
 ```
 
 Here's another example with divide equals.
@@ -503,12 +508,12 @@ jshell> System.out.println(number);
 In java there are six types of relational operators.
 
 ```
-    ==  Equality Operator
-    !=  Inequality Operator
-    >   Greater Than Operator
-    <   Less Than Operator
-    >=  Greater Than or Equal To Operator
-    <=  Less Than or Equal To Operator
+    ==    Equality Operator
+    !=    Inequality Operator
+    >     Greater Than Operator
+    <     Less Than Operator
+    >=    Greater Than or Equal To Operator
+    <=    Less Than or Equal To Operator
 ```
 
 These operators return type Boolean (aka true or false).
@@ -571,7 +576,7 @@ jshell> System.out.println(num++);
 jshell> System.out.println(num++);
 7
 
-jshell> System.out.println(num++);
+jshell> System.out.println(num);
 8
 ```
 
@@ -588,8 +593,8 @@ jshell> System.out.println(++num);
 jshell> System.out.println(++num);
 7
 
-jshell> System.out.println(++num);
-8
+jshell> System.out.println(num);
+7
 ```
 
 ### Logical And & Logical Or Operators
@@ -662,6 +667,279 @@ true
 jshell> System.out.println(! (1 < 100));
 false
 ```
+
+
+## Strings
+
+Strings in java are not primative types, they are object types. They are one of
+the most powerful types in java!
+
+There are multiple ways to initialize a string in Java. 
+
+The first is just by using the `String` keyword.
+
+The next way is to use the `new` keyword. The `new` keyword can be used in java
+to create new objects from classes.
+
+```
+class Strings {
+    public static void main(String[] args) {
+        String name = "John";
+
+        String favColor = new String("Blue");
+
+        System.out.println(name);
+        System.out.println(favColor);
+    }
+}
+```
+
+### Literal vs Object Strings
+
+What's the difference? Well the JVM will take all of the strings in a given
+program and store them in a section of memory called the "string pool." If a
+string exists in the string pool, and you try to initialize another identical
+string with a different name, then java will secretly point to two strings as
+the same portion of memory in the string pool. Whereas, if you initialize a
+string with the `new` keyword the string is assigned a whole new region of
+memory.
+
+* `Strings.java`
+
+```
+class Strings {
+    public static void main(String[] args) {
+        String literalSting1 = "abc";
+        String literalSting2 = "abc";
+
+        String objectSting1 = new String("xyz");
+        String objectSting2 = new String("xyz");
+
+        System.out.println(literalSting1 == literalSting2);
+        System.out.println(objectSting1 == objectSting2);
+    }
+}
+```
+
+* Output
+
+```
+> javac Strings.java
+> java Strings 
+true
+false
+```
+
+So we can see the first two literal strings are identical, whereas the object
+strings are not!
+
+### String Methods
+
+Because strings are object types they have certain builtin methods. We can take
+advantage of these methods in order to manipulate strings (a vital exercise in
+programming, plain text is king).
+
+#### .format() Method
+
+The first method we'll look at is the `.format()` method. This can be use to
+fill a preformatted string with data from some variables.
+
+```
+jshell> String name = "John R.";
+name ==> "John R."
+
+jshell> String country = "US";
+country ==> "US"
+
+jshell> int age = 28;
+age ==> 28
+
+jshell> String formattedString = String.format("My name is %s. I am from %s. I am %d years old.", name, country, age);
+formattedString ==> "My name is John R.. I am from US. I am 28 years old."
+```
+
+The `%s` and `%d` are called string format specifiers. Here's a list of all the
+ones for java.
+
+##### Format Specifiers
+
+```
+    %%       Inserts a % sign
+    %x %X    Integer hexadecimal
+    %t %T    Time and Date
+    %s %S    String
+    %n       Inserts a newline character
+    %o       Octal integer
+    %f       Decimal floating-point
+    %e %E    Scientific notation
+    %g       Causes Formatter to use either %f or %e, whichever is shorter
+    %h %H    Hash code of the argument
+    %d       Decimal integer
+    %c       Character
+    %b %B    Boolean
+    %a %A    Floating-point hexadecimal
+```
+
+#### .length() Method
+
+The next method we'll look at is the `.lenght()` method which gives you the
+length of a string.
+
+```
+jshell> String blah = "Blah blah blah";
+blah ==> "Blah blah blah"
+
+jshell> System.out.println(blah.length());
+14
+```
+
+The `.length()` method returns an int.
+
+#### .isEmpty() Method
+
+Next we'll look at the `isEmpty()` method. This method tells us if the string
+is or isn't empty. This method returns a bool (true or false).
+
+```
+jshell> String blah = "Blah blah blah";
+blah ==> "Blah blah blah"
+
+jshell> System.out.println(blah.isEmpty());
+false
+
+jshell> String fart = "";
+fart ==> ""
+
+jshell> System.out.println(fart.isEmpty());
+true
+```
+
+But notice if we fail to define `fart` entirely then we'll get an exception
+using the `isEmpty()` method.
+
+```
+jshell> String fart;
+fart ==> null
+
+jshell> System.out.println(fart.isEmpty());
+|  Exception java.lang.NullPointerException: Cannot invoke "String.isEmpty()" because "REPL.$JShell$18.fart" is null
+|        at (#9:1)
+```
+
+#### .toUpperCase() Method
+
+Just as it sounds, this method converts a string to all upper case.
+
+```
+jshell> String blah = "Blah blah blah";
+blah ==> "Blah blah blah"
+
+jshell> System.out.println(blah.toUpperCase());
+BLAH BLAH BLAH
+```
+
+#### .toLowerCase() Method
+
+Likewise, there is a `.toLowerCase()` method as well that converts a string to
+all lowercase.
+
+```
+jshell> String blah = "Blah BLAH Blah";
+blah ==> "Blah BLAH Blah"
+
+jshell> System.out.println(blah.toLowerCase());
+blah blah blah
+```
+
+#### .equals() Method
+
+Previously, we discussed the difference between the string literal and the
+object string. And we showed how if you compare the two using the `==` operator
+we'll get false. However, if we want to just compare the value of the strings
+to see if they match we can use the `.equals()` method for string comparison.
+
+```
+jshell> String string1 = new String("abc");
+string1 ==> "abc"
+
+jshell> String string2 = new String("abc");
+string2 ==> "abc"
+
+jshell> System.out.println(string1 == string2);
+false
+
+jshell> System.out.println(string1.equals(string2));
+true
+```
+
+#### .equalsIgnoreCase() Method
+
+If you want to do the same as above but ignoring the case of the variables,
+well you're in luck because there's a method for you.
+
+```
+jshell> String string1 = new String("abc");
+string1 ==> "abc"
+
+jshell> String string2 = new String("ABC");
+string2 ==> "ABC"
+
+jshell> System.out.println(string1.equalsIgnoreCase(string2));
+true
+```
+
+#### .replace() Method
+
+The `.replace()` method is useful for replacing a substring within a larger
+string.
+
+```
+jshell> String string = "The sky is blue.";
+string ==> "The sky is blue."
+
+jshell> System.out.println(string.replace("blue", "red"));
+The sky is red.
+
+jshell> System.out.println(string);
+The sky is blue.
+```
+
+But notice `.replace()` doesn't affect the value of the original string.
+
+#### .contains() Method
+
+The `.contains()` returns a bool and tells you whether or not a string contains
+a certain substring.
+
+```
+jshell> String string = "The sky is blue.";
+string ==> "The sky is blue."
+
+jshell> System.out.println(string.contains("blue"));
+true
+
+jshell> System.out.println(string.contains("fart"));
+false
+
+jshell> System.out.println(string.contains(""));
+true
+```
+
+Notice to java, all strings contain an empty string. So that is NOT a
+sufficient test for telling whether or not a string is empty in java! Instead,
+use the `.isEmpty()` method discussed above.
+
+#### More Methods
+
+You can find a list of more java sting methods linked below!
+
+[Java String Methods](https://www.w3schools.com/java/java_ref_string.asp)
+
+
+
+
+
+
 
 
 
