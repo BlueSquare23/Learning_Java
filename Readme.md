@@ -29,7 +29,6 @@ A classic criticism is that java has more "boiler-plate" code as compared to
 other programming languages meaning it takes alot more code to do something
 simple like print a string to the console.
 
-
 ### Classes, Objects, & Methods
 
 A class is an abstract datatype that can be used as a template to create
@@ -934,6 +933,146 @@ use the `.isEmpty()` method discussed above.
 You can find a list of more java sting methods linked below!
 
 [Java String Methods](https://www.w3schools.com/java/java_ref_string.asp)
+
+
+## User Input
+
+The ability to take user submitted input is an instrumental part of
+programming. Unlike other simpler languages, taking user input in java once
+again requires more boiler plate code than you might be used to.
+
+* `UserInput.java`
+
+```
+import java.util.Scanner;
+
+class UserInput {
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("What is your name? ");
+        String name = scanner.nextLine();
+
+        System.out.printf("Hello, %s!\n", name);
+
+        System.out.print("How old are you? ");
+        int age = scanner.nextInt();
+
+        // Clears input buffer
+        scanner.nextLine();
+
+        System.out.printf("%d is an excellent age to start programming!\n", age);
+
+        scanner.close();
+    }
+}
+```
+
+To take user input in java we can use something called a scanner object. The
+`Scanner` is a pre-written java class so we have to first import it at the top
+of our program. We can use the `new` keyword to create a new scanner object
+from the `Scanner` class.
+
+Then to actually take user input we run the scanner over whatever was supplied
+via stdin using the `.nextLine()` method and save it to the `name` variable.
+Same when taking in an integer, we use the `.nextInt()` method of the scanner
+object.
+
+One other thing worth noting about the above code is we're using the
+`.printf()` string method for the first time here to format our output sting.
+
+Lastly, we have to close the scanner object when we're done using it.
+
+### .nextInt() Method Caveat
+
+You'll notice in the above there is a line after we call the `.nextInt()`
+method where we just call `.nextLine()` without saving the results to a
+variable or doing anything with them.
+
+This is because the `.nextInt()` method leaves a newline carriage return in the
+input buffer after taking an int. If we fail to properly flush this floating
+newline it will mess up any additional calls we might make to `.nextLine()` to
+take user input by feeding an enter char before the user inputs anything.
+
+One way to avoid this is to just take all user input using `.nextLine()` and
+then explicitly cast any ints or bools or floats to their required types.
+
+
+## Conditional Statements
+
+Conditional statements are a fundamental part of computer programming.
+Conditional statements (or if statement as they are often called) allows us to
+making branching programs which take advantage of some of the operators we
+learned earlier.
+
+In the example below we'll use conditional statements in conjunction with the
+user input code we learned about previously.
+
+* `ConditionalStatements.java`
+
+```
+import java.util.Scanner;
+
+class ConditionalStatements {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Example Simple Calculator
+
+        System.out.print("Enter first number: ");
+        Double num1 = scanner.nextDouble();
+
+        System.out.print("Enter second number: ");
+        Double num2 = scanner.nextDouble();
+
+        // Cleanup input buffer
+        scanner.nextLine();
+
+        System.out.print("What operation would you like to preform? (+,-,*,/): ");
+        String opt = scanner.nextLine();
+
+        if (opt.equals("+")) {
+            System.out.printf("%f + %f = %f\n", num1, num2, num1 + num2);
+        } else if (opt.equals("-")) {
+            System.out.printf("%f - %f = %f\n", num1, num2, num1 - num2);
+        } else if (opt.equals("*")) {
+            System.out.printf("%f * %f = %f\n", num1, num2, num1 * num2);
+        } else if (opt.equals("/")) {
+            System.out.printf("%f / %f = %f\n", num1, num2, num1 / num2);
+        } else {
+            System.out.println("Invalid Operation!");
+        }
+
+        scanner.close();
+    }
+}
+```
+
+The main conditional keywords are `if`, `else if`, and `else`. They work pretty
+much the same as in other programming languages; the lines inside of the if
+statement's code block are only execute if the conditional statement evaluates
+to true.
+
+So in the above example we take some user input. If the string entered by the
+user is one of the accepted operators then that corresponding arithmetic
+operation will be preformed on the supplied numbers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
