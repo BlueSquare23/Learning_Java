@@ -9,8 +9,9 @@ tutorial below.
 
 [Java Programming for Beginners](https://youtu.be/A74TOX803D0)
 
-They're using some silly web-IDE to write code in the tutorial. I am not about
-that life. My tools are vim, terminal, jdk-17, java, javac, and jshell.
+They're using some silly web-IDE to write code in the tutorial. As the kids
+say, I'm not about that life. My tools are vim, terminal, jdk-17, java, javac,
+and jshell.
 
 
 ## Hello World!
@@ -1001,19 +1002,20 @@ then explicitly cast any ints or bools or floats to their required types.
 ## Conditional Statements
 
 Conditional statements are a fundamental part of computer programming.
-Conditional statements (or if statement as they are often called) allows us to
-making branching programs which take advantage of some of the operators we
-learned earlier.
+Conditional statements allows us to make branching programs which take
+advantage of some of the operators we learned earlier.
 
-In the example below we'll use conditional statements in conjunction with the
-user input code we learned about previously.
+### If, Else If, & Else
 
-* `ConditionalStatements.java`
+In the example below we'll use what's known as an if statement in conjunction
+with the user input code we learned about previously.
+
+* `IfElseStatements.java`
 
 ```
 import java.util.Scanner;
 
-class ConditionalStatements {
+class IfElseStatements {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -1058,18 +1060,777 @@ user is one of the accepted operators then that corresponding arithmetic
 operation will be preformed on the supplied numbers.
 
 
+### Switch Statement
+
+Similar to `if` statements, `switch` statements (sometimes called case
+statements) are long chains of conditionals. You could represent any switch
+statement as a long chain of if else statements. However, switch statements are
+optimized for this exact case and are treated differently by the JVM.
+
+* `SwitchStatments.java`
+
+```
+import java.util.Scanner;
+
+class SwitchStatments {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Example Simple Calculator
+
+        System.out.print("Enter first number: ");
+        Double num1 = scanner.nextDouble();
+
+        System.out.print("Enter second number: ");
+        Double num2 = scanner.nextDouble();
+
+        // Cleanup input buffer
+        scanner.nextLine();
+
+        System.out.print("What operation would you like to preform? (+,-,*,/): ");
+        String opt = scanner.nextLine();
+
+        switch (opt) {
+            case "+":
+                System.out.printf("%f + %f = %f\n", num1, num2, num1 + num2);
+                break;
+            case "-":
+                System.out.printf("%f - %f = %f\n", num1, num2, num1 - num2);
+                break;
+            case "*":
+                System.out.printf("%f * %f = %f\n", num1, num2, num1 * num2);
+                break;
+            case "/":
+                System.out.printf("%f / %f = %f\n", num1, num2, num1 / num2);
+                break;
+            default:
+                System.out.println("Invalid Operation!");
+        }
+
+        scanner.close();
+    }
+}
+```
+
+You can see, similar to our if else ladder, the switch statement allows us to
+consider a number of different options for the operator value as well as a
+`default` option if no other options are met.
+
+In my humble opinion the above switch statement implementation of the basic
+calculator is easier/nicer to read than the if else version. The if else
+version might look a little more compact. However, that is harder on the eyes
+and can obscure the actual conditional operation being considered. Also as
+discussed above, the switch statement is faster!
 
 
+## Arrays
+
+Arrays are a powerful data-structure in Java! They allow the programmer to
+store an ordered collection of things. Just like every over variable in Java
+arrays have to be declared before they can be used. When declaring an array in
+Java you must specify its type and size. Then when inserting values into the
+array you must specify an index.
+
+* `Vowels.java`
+
+```
+import java.util.Arrays;
+
+class Vowels {
+    public static void main(String[] args) {
+        char vowels[] = new char[5];
+
+        vowels[0] = 'a';
+        vowels[1] = 'e';
+        vowels[2] = 'i';
+        vowels[3] = 'o';
+        vowels[4] = 'u';
+
+        System.out.println(Arrays.toString(vowels));
+    }
+}
+```
+
+In the above code we're using the builtin Java `Arrays` library in order to
+print out our character array as a string.
+
+In Java arrays have an index starting at zero. So the above `vowels[]` array
+can store five chars and we can reference their position in the array as 0-4.
+
+Alternatively, you can also assign the values / width of the array on the same
+line where you initialize the array.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> char vowels[] = {'a', 'e', 'i', 'o', 'u'};
+vowels ==> char[5] { 'a', 'e', 'i', 'o', 'u' }
+
+jshell> System.out.println(Arrays.toString(vowels));
+[a, e, i, o, u]
+```
+
+We can see the length of an array using the `.length` property.
+
+```
+jshell> System.out.println(vowels.length);
+5
+```
+
+Don't get this confused with the `.length()` string method we discussed
+earlier. In the case of arrays, length is just a property (aka no need for the
+() after length for an array).
+
+### Arrays.sort() Method
+
+One of the builtin methods of the arrays library we imported is the `.sort()`
+method. In the case of our character array this will be sorted alphabetically.
+For example,
+
+```
+jshell> import java.util.Arrays;
+
+jshell> char vowels[] = {'u', 'o', 'i', 'e', 'a'};
+vowels ==> char[5] { 'u', 'o', 'i', 'e', 'a' }
+
+jshell> Arrays.sort(vowels);
+
+jshell> System.out.println(Arrays.toString(vowels));
+[a, e, i, o, u]
+```
+
+The `.sort()` also accepts two additional optional position arguments, if
+you're interested in sorting just a sub section of the array.
+
+### Arrays.binarySearch() Method
+
+If we want to find a value within our array we can take advantage of the
+`Arrays.binarySearch()` method to find our value using a binary search
+algorithm.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> char vowels[] = {'u', 'o', 'i', 'e', 'a'};
+vowels ==> char[5] { 'u', 'o', 'i', 'e', 'a' }
+
+jshell> Arrays.sort(vowels);
+
+jshell> System.out.println(Arrays.toString(vowels));
+[a, e, i, o, u]
+
+jshell> int characterPosition = Arrays.binarySearch(vowels, 'o');
+characterPosition ==> 3
+```
+
+An important thing to note is that binary search only works on a sorted array!
+So in the sorted array the `o` character is at position 3.
+
+If the `.binarySearch()` method ever returns a negative number you know that
+the value you're searching for is not within your array, or your array is not
+sorted.
+
+### Arrays.fill() Method
+
+Say we have an array and we want to populate all of the positions in it with
+the same value. In Java, we can accomplish this using the `Arrays.fill()`
+method.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> char xes[] = new char[5];
+xes ==> char[5] { '\000', '\000', '\000', '\000', '\000' }
+
+jshell> Arrays.fill(xes, 'x');
+
+jshell> System.out.println(Arrays.toString(xes));
+[x, x, x, x, x]
+```
+
+Like the `.sort()` method, the `.fill()` method also accepts two additional
+optional positional arguments if you're interested in filling just a sub
+section of the array.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> char oes[] = new char[5];
+oes ==> char[5] { '\000', '\000', '\000', '\000', '\000' }
+
+jshell> Arrays.fill(oes, 2, 4, 'o');
+
+jshell> System.out.println(Arrays.toString(oes));
+[, , o, o, ]
+```
+
+### Arrays.copyOf() Method
+
+In Java you can assign multiple names to the same array. That is, if you
+initialize an array, populate it, and then assign that array to another array
+name, you've essentially just created two labels for the same underlying array.
+
+For example,
+
+```
+jshell> import java.util.Arrays;
+
+jshell> int nums[] = {1, 2, 3, 4, 5};
+nums ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> int numsAgain[] = nums;
+numsAgain ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> nums[2] = 77;
+$19 ==> 77
+
+jshell> System.out.println(Arrays.toString(nums))
+[1, 2, 77, 4, 5]
+
+jshell> System.out.println(Arrays.toString(numsAgain))
+[1, 2, 77, 4, 5]
+```
+
+You can see instead of copying `nums` to `numsAgain` all we've really done is
+created two variable names for the same underlying array.
+
+To actually take the values in one array and reassign them to a completely new
+and separate array in Java you have to use the `.copyOf()` Arrays method.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> int nums[] = {1, 2, 3, 4, 5};
+nums ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> int numsAgain[] = Arrays.copyOf(nums, nums.length);
+numsAgain ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> nums[2] = 77;
+$24 ==> 77
+
+jshell> System.out.println(Arrays.toString(nums))
+[1, 2, 77, 4, 5]
+
+jshell> System.out.println(Arrays.toString(numsAgain))
+[1, 2, 3, 4, 5]
+```
+
+You can now see the changes made to the `nums[]` array did not affect the
+values stored in the `numsAgain[]` array.
+
+One thing worth nothing about the above code is that the `.copyOf()` method is
+initializing a new array an so you must specify an array length as well. In
+this case since we're just making a 1 to 1 copy we can just use the
+`num.length` or the original array.
+
+### Arrays.copyOfRange() Method
+
+Similar to the `.copyOf()` method, there is a `.copyOfRange()` range method as
+well for copying a sub section of an array to a new separate array.
+
+```
+jshell> import java.util.Arrays;
+
+jshell> int nums[] = {1, 2, 3, 4, 5};
+nums ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> int someNums[] = Arrays.copyOfRange(nums, 1, 3);
+someNums ==> int[2] { 2, 3 }
+
+jshell> System.out.println(Arrays.toString(nums))
+[1, 2, 3, 4, 5]
+
+jshell> System.out.println(Arrays.toString(someNums))
+[2, 3]
+```
+
+### Arrays.equals() Method
+
+The last array method we'll cover is the `.equals()` method. If we try to
+compare two arrays that are copies of each other but occupy different memory
+space then we'll have to use the `.equals()` method. The normal java equality
+operator `==` will only work if the two array names are references to the same
+underlying array. But for a true comparison of array values you must use the
+`.equals()` method.
+
+```
+jshell> int nums[] = {1, 2, 3, 4, 5};
+nums ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> int copyOfNums[] = Arrays.copyOf(nums, nums.length);
+copyOfNums ==> int[5] { 1, 2, 3, 4, 5 }
+
+jshell> System.out.println(Arrays.equals(nums, copyOfNums));
+true
+
+jshell> System.out.println(nums == copyOfNums);
+false
+```
 
 
+## Loops
+
+I've said it before and I'll say it again, loops are a fun-damental part of
+programming! 
+
+### For Loops
+
+Forloops are used to run over every value in a list and do something
+accordingly. Java has a similar forloop syntax to C. 
+
+There are a few basic parts to a forloop. First, there is the loop
+initialization (below `int i = 1;`). That sets the loop variable to its initial
+condition. Next there is the condition itself (below `i <= 10;`). This part is
+evaluated at the start of every loop. If it is true, the code within the loop
+body is triggered. And finally, there is the loop update (below `i++`). This
+part is triggered after every loop and adjusts the loop variable as needed.
+
+* `ForLoops.java`
+
+```
+class ForLoops {
+    public static void main(String[] args) {
+        for(int i = 1; i <= 10; i++) {
+            System.out.println(i);
+        }
+    }
+}
+```
+
+* `Output`
+
+```
+> javac ForLoops.java
+> java ForLoops 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+```
+
+#### Forloops and Iterables
+
+We can use our forloop in conjunction with the arrays we learned about
+previously to automatically loop over the values in an array with some
+conditional imposed.
+
+For example,
+
+```
+jshell> int nums[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+nums ==> int[9] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+
+jshell> for (int i = 3; i < nums.length; i++){
+   ...>     System.out.println(nums[i]);
+   ...> }
+4
+5
+6
+7
+8
+9
+```
+
+In the above example we loop over the array `nums[]` but only for the values
+above our index `i`, which we initialize at position 3. So only numbers after
+position 3 in our array are printed.
+
+### While loops
+
+Less common than the forloop, but still very powerful, is the while loop. While
+loops are loops that run ad\-infinitum until some ultimate condition is met.
+
+* `WhileLoops.java`
+
+```
+class WhileLoops {
+    public static void main(String[] args) {
+        int num = 5;
+        int multiplier = 1;
+
+        while(multiplier <= 10) {
+            System.out.printf("%d X %d = %d\n", num, multiplier, num * multiplier);
+            multiplier++;
+        }
+    }
+}
+```
+
+As you can see, the while loop only allows the programmer to specify a
+condition to be checked. The update statement and initialization must be done
+outside of the while loop statement.
+
+### Do While Loops
+
+Similar to the while loop, there is something called the do while loop. The
+difference between the while loop and the do while loop is that with the do
+while loop the condition is not checked until after the loop body is run.
+
+* `DoWhileLoops.java`
+
+```
+class DoWhileLoops {
+    public static void main(String[] args) {
+        int num = 5;
+        int multiplier = 1;
+
+        do {
+            System.out.printf("%d X %d = %d\n", num, multiplier, num * multiplier);
+            multiplier++;
+        } while(multiplier <= 10);
+    }
+}
+```
+
+In the case above the output is the same. However, the order the code is
+executed in is not.
 
 
+## Array Lists
 
+We have already gone over arrays. When we did we saw how they are of fixed
+length and the only real way to resize them is to copy them to a new larger /
+smaller array. Java also has another similar data structure called an array
+list. Array lists are like dynamically sized arrays, that also have some other 
+nice features.
 
+* `ArrayLists.java`
 
+```
+import java.util.ArrayList;
 
+class ArrayLists {
+    public static void main(String[] args) {
+        ArrayList<Integer> nums = new ArrayList<Integer>();
 
+        nums.add(1);
+        nums.add(2);
+        nums.add(3);
+        nums.add(4);
+        nums.add(5);
 
+        System.out.println(nums.toString());
+    }
+}
+```
+
+To use array lists we have to first import the `ArrayList` library. From there
+we can initialize a new array list using the `<Integer>` wrapper class. The
+`<Integer>` wrapper class is just the reference type form of the primitive
+`int` type. 
+
+Once we have our array list we can use the `.add()` method to put values in the
+list.
+
+Finally, the `num` array list can be printed using the builtin `.toString()`
+method.
+
+### Array Lists .get() Method
+
+We can use the `.get()` method of an array list to fetch values from our list
+by index. For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Character> alpha = new ArrayList<Character>();
+alpha ==> []
+
+jshell> alpha.add('a');
+$3 ==> true
+
+jshell> alpha.add('b');
+$4 ==> true
+
+jshell> alpha.add('c');
+$5 ==> true
+
+jshell> alpha.add('d');
+$6 ==> true
+
+jshell> alpha.add('e');
+$7 ==> true
+
+jshell> System.out.println(alpha.get(2));
+c
+```
+
+### Array Lists .remove() Method
+
+We can use the `.remove()` method to take values out of our array list. If
+called with a primitive type like int the `.remove()` method will delete the
+value at the specified index.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Character> alpha = new ArrayList<Character>();
+alpha ==> []
+
+jshell> alpha.add('a');
+$3 ==> true
+
+jshell> alpha.add('b');
+$4 => true
+
+jshell> alpha.add('c');
+$5 ==> true
+
+jshell> alpha.add('d');
+$6 ==> true
+
+jshell> alpha.add('e');
+$7 ==> true
+
+jshell> alpha.remove(1);
+$8 ==> 'b'
+
+jshell> System.out.println(alpha.toString());
+[a, c, d, e]
+```
+
+However, you can also pass a reference type to the `.remove()` method, in which
+case it will delete by value instead of index.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Character> alpha = new ArrayList<Character>();
+alpha ==> []
+
+jshell> alpha.add('a');
+$3 ==> true
+
+jshell> alpha.add('b');
+$4 ==> true
+
+jshell> alpha.add('c');
+$5 ==> true
+
+jshell> alpha.add('d');
+$6 ==> true
+
+jshell> alpha.add('e');
+$7 ==> true
+
+jshell> alpha.remove(Character.valueOf('c'));
+$8 ==> true
+
+jshell> System.out.println(alpha.toString());
+[a, b, d, e]
+```
+
+### Array Lists .set() Method
+
+If we would like to update the value at a particular position within the array
+list we can use the `.set()` method.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Character> alpha = new ArrayList<Character>();
+alpha ==> []
+
+jshell> alpha.add('a');
+$3 ==> true
+
+jshell> alpha.add('b');
+$4 ==> true
+
+jshell> alpha.add('c');
+$5 ==> true
+
+jshell> alpha.add('d');
+$6 ==> true
+
+jshell> alpha.add('e');
+$7 ==> true
+
+jshell> alpha.set(2, 'x');
+$8 ==> 'c'
+
+jshell> System.out.println(alpha.toString());
+[a, b, x, d, e]
+```
+
+### Array Lists .sort() Method
+
+We can use the `.sort()` method to sort array lists.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> import java.util.Comparator;
+
+jshell> ArrayList<Integer> nums = new ArrayList<Integer>();
+nums ==> []
+
+jshell> nums.add(5);
+$3 ==> true
+
+jshell> nums.add(77);
+$4 ==> true
+
+jshell> nums.add(9);
+$5 ==> true
+
+jshell> nums.add(1000);
+$6 ==> true
+
+jshell> nums.add(13);
+$7 ==> true
+
+jshell> nums.sort(Comparator.naturalOrder());
+
+jshell> System.out.println(nums.toString());
+[5, 9, 13, 77, 1000]
+
+jshell> nums.sort(Comparator.reverseOrder());
+
+jshell> System.out.println(nums.toString());
+[1000, 77, 13, 9, 5]
+```
+
+You'll notice in the above we have to first import the `Comparator` class. This
+allows us to pass a comparator object that's been invoked with the
+`naturalOrder()` method to the `.sort()` array list method. The `.sort()` array
+needs to know how to sort the array list. The comparator object tells it that.
+
+Likewise, off of this comparator object we can also call other methods. If we
+don't want to sort by natural order we can sort by `.reverseOrder()`. I leave
+it up to you to guess what that one does.
+
+### Array Lists .size() Method
+
+This ones very simple, it just spits out the number of elements in the array
+list.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Integer> nums = new ArrayList<Integer>();
+nums ==> []
+
+jshell> nums.add(1);
+$3 ==> true
+
+jshell> nums.add(2);
+$4 ==> true
+
+jshell> nums.add(3);
+$5 ==> true
+
+jshell> nums.add(4);
+$6 ==> true
+
+jshell> System.out.println(nums.size());
+4
+```
+
+### Array Lists .contains() Method
+
+This method will return true or false if a value is contained within the array
+list.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Integer> nums = new ArrayList<Integer>();
+nums ==> []
+
+jshell> nums.add(1);
+$3 ==> true
+
+jshell> nums.add(2);
+$4 ==> true
+
+jshell> nums.add(3);
+$5 ==> true
+
+jshell> nums.add(4);
+$6 ==> true
+
+jshell> System.out.println(nums.contains(3));
+true
+
+jshell> System.out.println(nums.contains(77));
+false
+```
+
+### Array Lists .isEmpty() Method
+
+Just like with the string methods, you cannot reliably use `.contains()` to
+tell if an array list is empty. Instead for that purpose there is a specific
+`.isEmpty()` method.
+
+For example,
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Integer> nums = new ArrayList<Integer>();
+nums ==> []
+
+jshell> System.out.println(nums.isEmpty());
+true
+
+jshell> nums.add(77);
+$4 ==> true
+
+jshell> System.out.println(nums.isEmpty());
+false
+```
+
+### Array Lists .forEach() Method
+
+If you want to do a forloop over everything inside of an array list, there's a
+method for that. The `.forEach()` method works as follows.
+
+```
+jshell> import java.util.ArrayList;
+
+jshell> ArrayList<Integer> nums = new ArrayList<Integer>();
+nums ==> []
+
+jshell> nums.add(1);
+$3 ==> true
+
+jshell> nums.add(2);
+$4 ==> true
+
+jshell> nums.add(3);
+$5 ==> true
+
+jshell> nums.add(4);
+$6 ==> true
+
+jshell> nums.forEach(num -> {
+   ...>     System.out.println(num * 2);
+   ...> });
+2
+4
+6
+8
+```
 
 
 
