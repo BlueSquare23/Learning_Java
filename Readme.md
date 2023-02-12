@@ -5,13 +5,14 @@
 
 This Readme is a series of notes on the fundamentals of Java programming that
 I've taken while watching the [freeCodeCamp](https://www.freeCodeCamp.org)
-tutorial below.
+tutorial below. All credit goes to Farhan Hasin Chowdhury and freeCodeCamp.org.
+I thank them for the video. These are simply notes taken while following along.
 
 [Java Programming for Beginners](https://youtu.be/A74TOX803D0)
 
-They're using some silly web-IDE to write code in the tutorial. As the kids
-say, I'm not about that life. My tools are vim, terminal, jdk-17, java, javac,
-and jshell.
+They're using some web-IDE to write code in the tutorial. I prefer the simple
+command lines tools. My tools are vim as my editor, jdk-17, java, javac, and
+jshell.
 
 
 ## Hello World!
@@ -671,7 +672,7 @@ false
 
 ## Strings
 
-Strings in java are not primative types, they are object types. They are one of
+Strings in java are not primitive types, they are object types. They are one of
 the most powerful types in java!
 
 There are multiple ways to initialize a string in Java. 
@@ -1371,7 +1372,7 @@ false
 
 ## Loops
 
-I've said it before and I'll say it again, loops are a fun-damental part of
+I've said it before and I'll say it again, loops are a fun\-damental part of
 programming! 
 
 ### For Loops
@@ -1525,6 +1526,8 @@ To use array lists we have to first import the `ArrayList` library. From there
 we can initialize a new array list using the `<Integer>` wrapper class. The
 `<Integer>` wrapper class is just the reference type form of the primitive
 `int` type. 
+
+### Array Lists .add() Method
 
 Once we have our array list we can use the `.add()` method to put values in the
 list.
@@ -1833,13 +1836,500 @@ jshell> nums.forEach(num -> {
 ```
 
 
+## HashMaps
+
+HashMaps are a data structure similar to arrays except they're made to store
+key value pairs.
+
+* `HashMaps.java`
+
+```
+import java.util.HashMap;
+
+class HashMaps {
+    public static void main(String[] args) {
+        HashMap<String, Integer> examScores = new HashMap<String, Integer>();
+        examScores.put("Math", 75);
+        examScores.put("Sociology", 85);
+        examScores.put("English", 65);
+        examScores.put("Philosophy", 98);
+
+        System.out.println(examScores.toString());
+    }
+}
+```
+
+Just like we saw with array lists, when initializing a hashmap you have to
+specify types using the reference type wrapper class. Since a hashmap is a key
+value pair store we have to specify both columns types.
+
+### HashMaps .put() Method
+
+In the above we use the `.put()` method to put entries into our hasmap. 
+
+### HashMaps .get() Method
+
+We can use the `.get()` method to pull entries from our hashmap.
+
+For example,
+
+```
+jshell> import java.util.HashMap;
+
+jshell> HashMap<String, Integer> examScores = new HashMap<String, Integer>();
+examScores ==> {}
+
+jshell> examScores.put("Math", 75);
+$3 ==> null
+
+jshell> examScores.put("Sociology", 85);
+$4 ==> null
+
+jshell> examScores.put("English", 65);
+$5 ==> null
+
+jshell> examScores.put("Philosophy", 98);
+$6 ==> null
+
+jshell> System.out.println(examScores.get("Philosophy"));
+98
+```
+
+### HashMaps .putIfAbsent() Method
+
+We can use the `.putIfAbsent()` method to add elements to the hashmap if they
+don't already exist.
+
+```
+jshell> import java.util.HashMap;
+
+jshell> HashMap<String, Integer> examScores = new HashMap<String, Integer>();
+examScores ==> {}
+
+jshell> examScores.put("Math", 75);
+$3 ==> null
+
+jshell> examScores.put("Sociology", 85);
+$4 ==> null
+
+jshell> examScores.put("English", 65);
+$5 ==> null
+
+jshell> examScores.put("Philosophy", 98);
+$6 ==> null
+
+jshell> examScores.putIfAbsent("Math", 98);
+$8 ==> 75
+
+jshell> System.out.println(examScores.toString());
+{English=65, Sociology=85, Math=75, Philosophy=98}
+```
+
+We can see it does Not re-add math since math already existed in the hashmap.
+
+### HashMaps .replace() Method
+
+If we want to overwrite what is in a hashmap we can use the `.replace()`
+method.
+
+### HashMaps .remove() Method
+
+If we want to remove an item from a hashmap we can use the `.remove()` method.
+
+### HashMaps .clear() Method
+
+If we want to clear the values from a hashmap we can use the `.clear()` method.
+
+### HashMaps .forEach() Method
+
+Just like with array lists, hashmaps have a `.forEach()` method which can be
+used to easily loop over the contents of the map.
+
+For example,
+
+```
+jshell> import java.util.HashMap;
+
+jshell> HashMap<String, Integer> examScores = new HashMap<String, Integer>();
+examScores ==> {}
+
+jshell> examScores.put("Math", 75);
+$3 ==> null
+
+jshell> examScores.put("Sociology", 85);
+$4 ==> null
+
+jshell> examScores.put("English", 65);
+$5 ==> null
+
+jshell> examScores.put("Philosophy", 98);
+$6 ==> null
+
+jshell> examScores.forEach((subject, score) -> {
+   ...>     examScores.replace(subject, score - 10);
+   ...> });
+
+jshell> System.out.println(examScores.toString());
+{English=55, Sociology=75, Math=65, Philosophy=88}
+```
+
+In the above example we removed 10 from each score using a `.forEach()` loop.
 
 
+## Object Oriented Programming
+
+Java is an object oriented language, which means its meant to be used to do a
+style of programming known as object oriented programming. Object oriented
+programming is a programming paradigm centered around using objects as the
+chief data storage and manipulation abstraction. 
+
+In practice, what this means is oop languages do not tend to use stand alone
+functions but rather methods which are attached to certain objects and used to
+manipulate the data therein.
+
+The power of object oriented programming is that it allows the programmer to
+more easily translate real world concepts and ideas into computer code. For
+example, say we want to make a video game. We want it to be an rpg with a
+character who has stats and weapons and can level up ect.. 
+
+We might choose an object oriented language to implement this game in because
+it would be very easy to translate these ideas into software objects. For
+example, our character might be one object with her stats being different
+attributes, and her actions being different methods. Then each of her weapons
+may be different object with their own attack or defend methods and various
+stats, ect..
+
+### Writing an Object Oriented Program
+
+Were going to write a program to uses an OOP approach to tell us some
+information about a user object.
+
+We're going to create two files.
+
+* `OOP.java`
+
+```
+import java.time.LocalDate;
+
+class OOP {
+    public static void main(String[] args) {
+        User youngerUser = new User();  // Initializes new user object.
+
+        youngerUser.name = "Billy Bob";
+        youngerUser.birthDay = LocalDate.parse("1993-12-23");
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", youngerUser.name, youngerUser.birthDay.toString(), youngerUser.age());
+
+        User olderUser = new User();  // Initializes new user object.
+
+        olderUser.name = "Bobby Bill";
+        olderUser.birthDay = LocalDate.parse("1965-07-18");
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", olderUser.name, olderUser.birthDay.toString(), olderUser.age());
+    }
+}
+```
+
+* `User.java`
+
+```
+import java.time.LocalDate;
+import java.time.Period;
+
+public class User {
+    public String name;
+    public LocalDate birthDay;
+
+    // Age method
+    public int age() {
+        int age = Period.between(this.birthDay, LocalDate.now()).getYears();
+        return age;
+    }
+}
+```
+
+We use a public class for User because we want it to be accessible anywhere in
+our program.
+
+Variables defined at a class level in Java are known as properties. When we
+define a class with public properties we can access them from outside of that
+class and change their values. If we don't set the property variables to
+anything when instantiating a new `User` object, they'll default to `null`.
+
+That last thing worth pointing out about the above is the use of the `this`
+keyword in the age method. The `this` keyword is used to specify that the
+object being worked on is itself, rather than some other object.
+
+* Output
+
+```
+> javac OOP.java
+> java OOP 
+Billy Bob was born on 1993-12-23 and is now 29 years old.
+Bobby Bill was born on 1965-07-18 and is now 57 years old.
+```
+
+### Constructors
+
+Whenever an object is instantiated a method of the base class is run called a
+constructor. The constructor is responsible for initializing all of the default
+values for an object's properties.
+
+We can customize our classes constructor methods in order to make it do what we
+want. We can use the code from before to demonstrate.
+
+* `OOP.java`
+
+```
+class OOP {
+    public static void main(String[] args) {
+        User youngerUser = new User("Billy Bob", "1993-12-23");  // Initializes new user object w/ constructor call.
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", youngerUser.name, youngerUser.birthDay.toString(), youngerUser.age());
+
+        User olderUser = new User("Bobby Bill", "1965-07-18");  // Initializes new user object w/ constructor call.
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", olderUser.name, olderUser.birthDay.toString(), olderUser.age());
+    }
+}
+```
+
+* `User.java`
+
+```
+import java.time.LocalDate;
+import java.time.Period;
+
+public class User {
+    public String name;
+    public LocalDate birthDay;
+
+    // Constructor method
+    User(String name, String birthDay) {
+        this.name = name;
+        this.birthDay = LocalDate.parse(birthDay);
+    }
+
+    // Age method
+    public int age() {
+        int age = Period.between(this.birthDay, LocalDate.now()).getYears();
+        return age;
+    }
+}
+```
+
+We can define the constructor method by creating a method named the same thing
+as our class. Then within that method we can use the `this` keyword to accept
+the arguments and assign them to the objects own properties.
+
+This enables us to add the User's name and dob right within the constructor
+call in the main `OOP.java` file. Saves us a step, cleans up the code a bit.
+
+One other thing you might notice is that we no longer need the `import
+java.time.LocalDate;` line at the top of the `OOP.java` file. That is because
+we've abstracted away the concept of a date/time string with the constructor
+method call. Now when we instantiate the objects all we have to do is call the
+constructor with two string arguments, the second of which will then be
+interpreted as a date/time object within the User class.
+
+### Getter Methods
+
+So far our simple `OOP` program (and yes, I am aware that is like saying ATM
+Machine) has used public properties. That means any other code anywhere in our
+program has access to change those values. That's considered bad practice
+because it can led to bugs and security problems.
+
+Instead, what we ought to do is set those properties to private and then only
+allow access to them via a getter method. A getter method is a method of our
+class that allows outside classes/methods to have read only access to a
+property of our object.
+
+* `OOP.java`
+
+```
+class OOP {
+    public static void main(String[] args) {
+        User youngerUser = new User("Billy Bob", "1993-12-23");  // Initializes new user object w/ constructor call.
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", youngerUser.getName(), youngerUser.getBirthDay(), youngerUser.age());
+
+        User olderUser = new User("Bobby Bill", "1965-07-18");  // Initializes new user object w/ constructor call.
+
+        System.out.printf("%s was born on %s and is now %d years old.\n", olderUser.getName(), olderUser.getBirthDay(), olderUser.age());
+    }
+}
+```
+
+* `User.java`
+
+```
+import java.time.LocalDate;
+import java.time.Period;
+
+public class User {
+    private String name;
+    private LocalDate birthDay;
+
+    // Constructor method
+    User(String name, String birthDay) {
+        this.name = name;
+        this.birthDay = LocalDate.parse(birthDay);
+    }
+
+    // Getter for name
+    public String getName() {
+        return this.name;
+    }
+
+    // Getter for birthDay
+    public String getBirthDay() {
+        return this.birthDay.toString();
+    }
+
+    // Age method
+    public int age() {
+        int age = Period.between(this.birthDay, LocalDate.now()).getYears();
+        return age;
+    }
+}
+```
+
+In the above `OOP.java` file you'll see that now instead of printing the
+property directly, (we're no longer allowed to do that with them now being set
+to private) we use the newly defined getter methods to pull that information
+about our User objects.
+
+### Inheritance
+
+Sometimes its useful to have an object that inherits (is given at birth from
+its parent) certain properties. 
+
+Say for example we have a library that lends out books and they need some
+software written. We know that we can represent these books as objects within
+our code. However, there's a problem. The library sometimes offers the same
+book but in different formats. For example, they may offer a paperback version,
+an Ebook version, and an audiobook version. 
+
+To make matters more complex each version has totally different properties. The
+ebooks and physical books have page counts (but they're not the same) and the
+audiobooks don't even have a page number, they just have a runtime.
+
+Given what we've learned about Java thus far we might think over some solutions
+to the problem. We know we could just represent the different formats of the
+same book as completely different objects, having a different class for ebook,
+audiobook, and physical book. However, we decide against that approach because
+there's a lot of duplicate information there. The title and author for a given
+book don't change just because its the ebook or audiobook version.
+
+Likewise we don't want to just have one object with a bunch of different
+properties that are mostly null. That's going to be a messy solution to
+implement programmatically and so we decide there must be a better way. 
+
+The answer to our problem is inheritance. With inheritance we can make a single
+Book class that contains all of the common properties and methods we care about
+in it. Then can make child classes from that parent that inherit the parents
+properties and methods. Likewise, when we create the child classes we can
+assign any remaining specific properties / methods at that time.
+
+* `OOP2.java`
+
+```
+public class OOP2 {
+    public static void main(String[] args){
+        // Normal base Book class object instantiation
+        Book book1 = new Book("To Kill a Mockingbird", "Harper Lee");
+
+        // Inherited AudioBook class object instantiation
+        AudioBook book2 = new AudioBook("Dracula", "Bram Stoker", 30000);
+
+        System.out.println(book1.toString());
+        System.out.println(book2.toString());
+    }
+}
+```
+
+* `Book.java`
+
+```
+public class Book {
+    private String title;
+    private String author;
+
+    Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public String toString() {
+        return String.format("%s by %s", this.title, this.author);
+    }
+}
+```
+
+* `AudioBook.java`
+
+```
+public class AudioBook extends Book {
+    private int runTime;
+
+    AudioBook(String title, String author, int runTime) {
+        super(title, author);
+        this.runTime = runTime;
+    }
+}
+```
+
+* `EBook.java`
+
+```
+public class EBook extends Book {
+    private int runTime;
+
+    AudioBook(String title, String author, int pageCount) {
+        super(title, author);
+        this.pageCount = pageCount;
+    }
+}
+```
+
+* Output
+
+```
+> javac OOP2.java
+> java OOP2
+To Kill a Mockingbird by Harper Lee
+Dracula by Bram Stoker
+```
+
+In the above code is a simple example of inheritance. In it the `AudioBook` and
+`EBook` classes inherit their properties / methods from the main `Book` parent
+class. Because of this, in their constructor methods the child classes must use
+the `super` keyword to pull those properties in at the time of object
+instantiation.
+
+Similarly, the objects inherit the `toString()` method from the parent `Book`
+class and so can print out the basic book info when that is called.
 
 
+## Conclusion
 
+This isn't the end, its just the beginning. These are the basic language
+feature of the Java programming language. However, this is far from a
+comprehensive course. Hopefully it is enough to get started. But the real way
+to learn, as with anything, is practice.
 
+As for me I'm going to continue practicing in the form of
+[HackerRank](https://www.hackerrank.com/) Java coding challenges. You will be
+able to find these in the Exercises folder. Also any miscellaneous java
+projects I find myself working on will go in the MiscJavaPrograms folder.
 
-
-
-
+Thanks once again to [Farhan Hasin Chowdhury and freeCodeCamp.org for the video
+these notes are based on](https://youtu.be/A74TOX803D0)!
