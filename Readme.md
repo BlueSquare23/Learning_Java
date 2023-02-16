@@ -2001,7 +2001,7 @@ stats, ect..
 
 ### Writing an Object Oriented Program
 
-Were going to write a program to uses an OOP approach to tell us some
+Were going to write a program that uses an OOP approach to tell us some
 information about a user object.
 
 We're going to create two files.

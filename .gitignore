@@ -1,1 +1,4 @@
 *.class
+*.jar
+*.wav
+*.db
