@@ -19,6 +19,10 @@ import java.io.InputStreamReader;
 */
 
 public class Main {
+    private static final Connection conn = connect();
+    private static final String dbUrl = "jdbc:sqlite:musicLibrary.db";
+    private static final String audioPlayer = "mpv";
+
     static void printMainMenu() {
         System.out.printf("\n 1) Enter a New Song");
         System.out.printf("\n 2) List All Songs");
@@ -29,9 +33,9 @@ public class Main {
     }
 
     // Initalizes connection to database
-    private Connection connect() {
+    private static Connection connect() {
         // SQLite connection string
-        String url = "jdbc:sqlite:musicLibrary.db";
+        String url = dbUrl;
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -42,7 +46,7 @@ public class Main {
     }
 
     // Creates songs table schema
-    public void createTable() {
+    private static void createTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS songs (\n"
                 + "	id integer PRIMARY KEY,\n"
@@ -52,8 +56,7 @@ public class Main {
                 + "	path text NOT NULL\n"
                 + ");";
         
-        try (Connection conn = this.connect();
-                Statement stmt = conn.createStatement()) {
+        try (Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -62,18 +65,17 @@ public class Main {
     }
 
     /**
-     * Insert a new row into the songs table
+    * Insert a new row into the songs table
      *
      * @param title
      * @param artist
      * @param year
      * @param filePath
      */
-    public void insert(String title, String artist, String year, String filePath) {
+    private static void insert(String title, String artist, String year, String filePath) {
         String sql = "INSERT INTO songs(title,artist,year,path) VALUES(?,?,?,?)";
 
-        try (Connection conn = this.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, title);
             pstmt.setString(2, artist);
             pstmt.setString(3, year);
@@ -87,12 +89,11 @@ public class Main {
 
     /**
     * Select all rows in the songs table
-    */
-    public void selectAll(){
+     */
+    private static void selectAll(){
         String sql = "SELECT id, title, artist, year, path FROM songs";
         
-        try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
+        try (Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
             
             // loop through the result set
@@ -110,15 +111,16 @@ public class Main {
 
     /**
     * Select all rows in the songs table that match the search string
-    */
-    public void searchTable(String searchQuery){
+     *
+     * @param searchQuery
+     */
+    private static void searchTable(String searchQuery){
         String sql = "SELECT id, title, artist, year, path FROM songs" +
             " WHERE id LIKE " + "'%" + searchQuery + "%'" + " OR title LIKE " + "'%" + searchQuery + "%'" +
             " OR artist LIKE " + "'%" + searchQuery + "%'" + " OR year LIKE " + "'%" + searchQuery + "%'" +
             " OR path LIKE " + "'%" + searchQuery + "%'";
         
-        try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
+        try (Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
             
             // loop through the result set
@@ -136,13 +138,14 @@ public class Main {
 
     /**
     * Select path for row with given id from the songs table
-    */
-    public String getPath(int index){
+     *
+     * @param index
+     */
+    private static String getPath(int index){
         String sql = "SELECT path FROM songs" +
             " WHERE id LIKE " + index;        
 
-        try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
+        try (Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
             
             // loop through the result set
@@ -158,15 +161,14 @@ public class Main {
 
     /**
      * Delete a song specified by the id
-     *
-     * @param id
-     */
+      *
+      * @param id
+      */
 
-    public void delete(int id) {
+    private static void delete(int id) {
         String sql = "DELETE FROM songs WHERE id = ?";
 
-        try (Connection conn = this.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             pstmt.setInt(1, id);
@@ -180,8 +182,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main app = new Main();
-        app.createTable();
+        createTable();
         
         System.out.println("##### Java Music Database & Player #####");
         Scanner scanner = new Scanner(System.in);
@@ -204,13 +205,13 @@ public class Main {
 
                 // Am I doing oop right?
                 Song newSong = new Song(title, artist, year, filePath);
-                app.insert(newSong.getTitle(), newSong.getArtist(), newSong.getYear(), newSong.getFilePath());
+                insert(newSong.getTitle(), newSong.getArtist(), newSong.getYear(), newSong.getFilePath());
                 break;
 
             // List All Songs
             case "2":
                 System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
-                app.selectAll();
+                selectAll();
                 break;
 
             // Search for a Song
@@ -220,7 +221,7 @@ public class Main {
                 String searchString = scanner.nextLine();
 
                 System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
-                app.searchTable(searchString);
+                searchTable(searchString);
                 break;
 
             // Delete a song
@@ -231,23 +232,23 @@ public class Main {
                 // Flush input buffer
                 scanner.nextLine();
                 
-                app.delete(deleteIndex);
+                delete(deleteIndex);
                 break;
 
             // Play a Song
             case "5":
-                System.out.printf("\n### Please enter the index of a song to delete ###\n\n");
+                System.out.printf("\n### Please enter the index of a song to play ###\n\n");
                 System.out.print("Song Index: ");
                 int playSongIndex = scanner.nextInt();
                 // Flush input buffer
                 scanner.nextLine();
                 
-                String path = app.getPath(playSongIndex);
+                String path = getPath(playSongIndex);
 
                 // Use external program to play the music file
                 ProcessBuilder processBuilder = new ProcessBuilder();
                 // Uses mpv music player to play song.
-                processBuilder.command("mpv", path);
+                processBuilder.command(audioPlayer, path);
 
                 try {
 
