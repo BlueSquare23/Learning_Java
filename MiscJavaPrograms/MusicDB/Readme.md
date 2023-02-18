@@ -31,8 +31,9 @@ There's then an interactive menu with some options for the user.
  3) Search for a Song
  4) Delete a song
  5) Play a Song
+ q) Quit
 
-What would you like to do? (1,2,3,4,5):
+What would you like to do? (1,2,3,4,5,q):
 ```
 
 ### External Music Player
