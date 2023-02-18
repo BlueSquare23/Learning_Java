@@ -3,7 +3,7 @@
 ## Overview
 
 The main idea is to have a simple program that takes a few of bits of
-inforamtion about a song / piece of music from a user via stdin. The program
+inforamtion about a song or piece of music from a user via stdin. The program
 will then enter that information into a SQLite database for later querying /
 playing.
 
@@ -11,7 +11,7 @@ playing.
 
 The program requires the Java Database Connectivity (JDBC) API in order to
 connect to the SQLite database. You can download the latest version of the
-required jar file from [their release
+required jar file from [their releases
 page](https://github.com/xerial/sqlite-jdbc/releases).
 
 This is a simple interactive CLI program. After compiling the program with 

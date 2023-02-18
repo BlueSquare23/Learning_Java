@@ -29,7 +29,8 @@ public class Main {
         System.out.printf("\n 3) Search for a Song");
         System.out.printf("\n 4) Delete a song");
         System.out.printf("\n 5) Play a Song");
-        System.out.printf("\n\nWhat would you like to do? (1,2,3,4,5): ");
+        System.out.printf("\n q) Quit");
+        System.out.printf("\n\nWhat would you like to do? (1,2,3,4,5,q): ");
     }
 
     // Initalizes connection to database
@@ -81,7 +82,7 @@ public class Main {
             pstmt.setString(3, year);
             pstmt.setString(4, filePath);
             pstmt.executeUpdate();
-            System.out.println("Song Added To Database!");
+            System.out.printf("\n### Song Added To Database! ###\n");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -175,7 +176,7 @@ public class Main {
             // execute the delete statement
             pstmt.executeUpdate();
 
-            System.out.println("Song Deleted From Database!");
+            System.out.printf("\n### Song Deleted From Database! ###\n");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -183,99 +184,102 @@ public class Main {
 
     public static void main(String[] args) {
         createTable();
-        
+
         System.out.println("##### Java Music Database & Player #####");
         Scanner scanner = new Scanner(System.in);
 
-        printMainMenu();
-        String option = scanner.nextLine();
+        while(true) {
+            printMainMenu();
+            String option = scanner.nextLine();
 
-        switch (option) {
-            // Enter a New Song
-            case "1":
-                System.out.printf("\n### Please enter the following details ###\n\n");
-                System.out.print("Song Title: ");
-                String title = scanner.nextLine();
-                System.out.print("Song Artist: ");
-                String artist = scanner.nextLine();
-                System.out.print("Song Year: ");
-                String year = scanner.nextLine();
-                System.out.print("Song File Path: ");
-                String filePath = scanner.nextLine();
+            switch (option) {
+                // Quit
+                case "q":
+                    System.out.printf("\nGoodbye!\n\n");
+                    System.exit(0);
+                // Enter a New Song
+                case "1":
+                    System.out.printf("\n### Please enter the following details ###\n\n");
+                    System.out.print("Song Title: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Song Artist: ");
+                    String artist = scanner.nextLine();
+                    System.out.print("Song Year: ");
+                    String year = scanner.nextLine();
+                    System.out.print("Song File Path: ");
+                    String filePath = scanner.nextLine();
 
-                // Am I doing oop right?
-                Song newSong = new Song(title, artist, year, filePath);
-                insert(newSong.getTitle(), newSong.getArtist(), newSong.getYear(), newSong.getFilePath());
-                break;
+                    // Am I doing oop right?
+                    Song newSong = new Song(title, artist, year, filePath);
+                    insert(newSong.getTitle(), newSong.getArtist(), newSong.getYear(), newSong.getFilePath());
+                    break;
 
-            // List All Songs
-            case "2":
-                System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
-                selectAll();
-                break;
+                // List All Songs
+                case "2":
+                    System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
+                    selectAll();
+                    break;
 
-            // Search for a Song
-            case "3":
-                System.out.printf("\n### Please enter a search string ###\n\n");
-                System.out.print("Search String: ");
-                String searchString = scanner.nextLine();
+                // Search for a Song
+                case "3":
+                    System.out.printf("\n### Please enter a search string ###\n\n");
+                    System.out.print("Search String: ");
+                    String searchString = scanner.nextLine();
 
-                System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
-                searchTable(searchString);
-                break;
+                    System.out.printf("\nIndex\tTitle\tArtist\tYear\tFile Path\n\n");
+                    searchTable(searchString);
+                    break;
 
-            // Delete a song
-            case "4":
-                System.out.printf("\n### Please enter the index of a song to delete ###\n\n");
-                System.out.print("Song Index: ");
-                int deleteIndex = scanner.nextInt();
-                // Flush input buffer
-                scanner.nextLine();
-                
-                delete(deleteIndex);
-                break;
+                // Delete a song
+                case "4":
+                    System.out.printf("\n### Please enter the index of a song to delete ###\n\n");
+                    System.out.print("Song Index: ");
+                    int deleteIndex = scanner.nextInt();
+                    // Flush input buffer
+                    scanner.nextLine();
 
-            // Play a Song
-            case "5":
-                System.out.printf("\n### Please enter the index of a song to play ###\n\n");
-                System.out.print("Song Index: ");
-                int playSongIndex = scanner.nextInt();
-                // Flush input buffer
-                scanner.nextLine();
-                
-                String path = getPath(playSongIndex);
+                    delete(deleteIndex);
+                    break;
 
-                // Use external program to play the music file
-                ProcessBuilder processBuilder = new ProcessBuilder();
-                // Uses mpv music player to play song.
-                processBuilder.command(audioPlayer, path);
+                // Play a Song
+                case "5":
+                    System.out.printf("\n### Please enter the index of a song to play ###\n\n");
+                    System.out.print("Song Index: ");
+                    int playSongIndex = scanner.nextInt();
+                    // Flush input buffer
+                    scanner.nextLine();
 
-                try {
+                    String path = getPath(playSongIndex);
 
-                    Process process = processBuilder.start();
+                    // Use external program to play the music file
+                    ProcessBuilder processBuilder = new ProcessBuilder();
+                    // Uses mpv music player to play song.
+                    processBuilder.command(audioPlayer, path);
 
-                    BufferedReader reader =
-                            new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    try {
 
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.out.println(line);
+                        Process process = processBuilder.start();
+
+                        BufferedReader reader =
+                                new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+
+                        int exitCode = process.waitFor();
+                        System.out.println("\nExited with error code : " + exitCode);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
 
-                    int exitCode = process.waitFor();
-                    System.out.println("\nExited with error code : " + exitCode);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            default:
-                System.out.println("Invalid Operation!");
+                default:
+                    System.out.println("Invalid Operation!");
             }
- 
-        scanner.close();
+        }
     }
-
 }
