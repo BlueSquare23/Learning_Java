@@ -33,9 +33,8 @@ public class Main {
         System.out.printf("\n\nWhat would you like to do? (1,2,3,4,5,q): ");
     }
 
-    // Initalizes connection to database
+    // Initializes connection to database
     private static Connection connect() {
-        // SQLite connection string
         String url = dbUrl;
         Connection conn = null;
         try {
@@ -50,11 +49,11 @@ public class Main {
     private static void createTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS songs (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	title text NOT NULL,\n"
-                + "	artist text NOT NULL,\n"
+                + " id integer PRIMARY KEY,\n"
+                + " title text NOT NULL,\n"
+                + " artist text NOT NULL,\n"
                 + " year text NOT NULL,\n"
-                + "	path text NOT NULL\n"
+                + " path text NOT NULL\n"
                 + ");";
         
         try (Statement stmt = conn.createStatement()) {
@@ -197,6 +196,7 @@ public class Main {
                 case "q":
                     System.out.printf("\nGoodbye!\n\n");
                     System.exit(0);
+
                 // Enter a New Song
                 case "1":
                     System.out.printf("\n### Please enter the following details ###\n\n");
@@ -253,11 +253,12 @@ public class Main {
 
                     // Use external program to play the music file
                     ProcessBuilder processBuilder = new ProcessBuilder();
+
                     // Uses mpv music player to play song.
                     processBuilder.command(audioPlayer, path);
 
+                    // Open subprocess to exec audioPlayer
                     try {
-
                         Process process = processBuilder.start();
 
                         BufferedReader reader =
