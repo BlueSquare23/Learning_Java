@@ -143,20 +143,18 @@ public class Main {
      */
     private static String getPath(int index){
         String sql = "SELECT path FROM songs" +
-            " WHERE id LIKE " + index;        
+                     " WHERE id=" + index;
 
         try (Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+             ResultSet rs    = stmt.executeQuery(sql)) {
             
-            // loop through the result set
-            while (rs.next()) {
+            if (rs.next()) {
                 return rs.getString("path");
             }
         } catch (SQLException e) {
-            return e.getMessage();
+            return null;
         }
-    // Okay sure compiler
-    return "";
+        return null;
     }
 
     /**
@@ -181,6 +179,22 @@ public class Main {
         }
     }
 
+    /**
+     * Casts string to int, or returns error
+      *
+      * @param str
+      */
+    private static int getInt(String str) {
+        int playSongIndex = -1;
+        try{
+            playSongIndex = Integer.parseInt(str);
+        }
+        catch (NumberFormatException ex){
+            System.out.printf("\n### You're a fool, that's not a number. I'm a good bing :) ###\n");
+        }
+        return playSongIndex;
+    }
+
     public static void main(String[] args) {
         createTable();
 
@@ -190,6 +204,7 @@ public class Main {
         while(true) {
             printMainMenu();
             String option = scanner.nextLine();
+            String input;
 
             switch (option) {
                 // Quit
@@ -234,9 +249,13 @@ public class Main {
                 case "4":
                     System.out.printf("\n### Please enter the index of a song to delete ###\n\n");
                     System.out.print("Song Index: ");
-                    int deleteIndex = scanner.nextInt();
-                    // Flush input buffer
-                    scanner.nextLine();
+                    input = scanner.nextLine();
+
+                    int deleteIndex = getInt(input);
+
+                    if (deleteIndex == -1) {
+                        continue;
+                    }
 
                     delete(deleteIndex);
                     break;
@@ -245,11 +264,19 @@ public class Main {
                 case "5":
                     System.out.printf("\n### Please enter the index of a song to play ###\n\n");
                     System.out.print("Song Index: ");
-                    int playSongIndex = scanner.nextInt();
-                    // Flush input buffer
-                    scanner.nextLine();
+                    input = scanner.nextLine();
+
+                    int playSongIndex = getInt(input);
+
+                    if (playSongIndex == -1) {
+                        continue;
+                    }
 
                     String path = getPath(playSongIndex);
+                    if (path == null) {
+                        System.out.println("\n### No results found ###");
+                        continue;
+                    }
 
                     // Use external program to play the music file
                     ProcessBuilder processBuilder = new ProcessBuilder();
@@ -259,18 +286,8 @@ public class Main {
 
                     // Open subprocess to exec audioPlayer
                     try {
-                        Process process = processBuilder.start();
-
-                        BufferedReader reader =
-                                new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            System.out.println(line);
-                        }
-
-                        int exitCode = process.waitFor();
-                        System.out.println("\nExited with error code : " + exitCode);
+                        int exitCode = processBuilder.inheritIO().start().waitFor();
+                        System.out.printf("Exit Code: %d\n", exitCode);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -278,6 +295,7 @@ public class Main {
                         e.printStackTrace();
                     }
 
+                    break;
                 default:
                     System.out.println("Invalid Operation!");
             }
